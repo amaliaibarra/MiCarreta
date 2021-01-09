@@ -1,0 +1,45 @@
+﻿@using TrendyShop.Models
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model IEnumerable<Incidence>
+
+
+
+<div class="col-lg-8 mb-4 mx-auto">
+    <div class="card ">
+        <div class="card-header h-100">
+            <h3>Incidencias</h3>
+        </div>
+        <div class="card-body">
+
+            <table class="table table-bordered">
+                <tr>
+                    <th>Asunto</th>
+                    <th>Precio</th>
+                    <th>Descripción</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                @foreach (var i in Model)
+                {
+                    <tr>
+                        <td>@i.Subject</td>
+                        <td>@i.Price</td>
+                        <td>@i.Description</td>
+                        <td>@Html.ActionLink("Editar", "Edit", "Incidence", new { iid = i.IncidenceId })</td>
+                        <td>@Html.ActionLink("Eliminar", "Delete", "Incidence", new { iid = i.IncidenceId })</td>
+                    </tr>
+
+                }
+            </table>
+        </div>
+
+        <div class="card-footer">
+            <button  onclick="location.pathname = 'Incidence/NewIncidence'">Añadir</button>
+            <button  onclick="location.pathname='/Home'">Cancelar</button>
+        </div>
+    </div>
+</div>

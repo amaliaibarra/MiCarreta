@@ -1,0 +1,41 @@
+﻿@using TrendyShop.Models
+@model IEnumerable<TrendyShop.Models.Maintenance>
+
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="col-lg-6 mx-auto">
+    <div class="card">
+        <div class="card-header">Mantenimientos</div>
+        <div class="card-body">
+            <table class="table table-bordered mb-2">
+                <tr>
+                    <th>Descripción</th>
+                    <th>Costo</th>
+                    <th>Fecha</th>
+                    <th></th>
+                    <th></th>
+
+                </tr>
+
+                @foreach (var m in Model)
+                {
+                    <tr>
+                        <td>@m.Description</td>
+                        <td>@m.Cost</td>
+                        <td>@m.Date.Month/@m.Date.Day/@m.Date.Year</td>
+                        <td>@Html.ActionLink("Editar", "Edit", "Maintenance", new { mid = m.MaintenanceId })</td>
+                        <td>@Html.ActionLink("Eliminar", "Delete", "Maintenance", new { mid = m.MaintenanceId })</td>
+
+                    </tr>
+
+                }
+            </table>
+
+            <button onclick="location.pathname = 'Maintenance/NewMaintenance'">Añadir Mantenimiento</button>
+        </div>
+    </div>
+</div>
