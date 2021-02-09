@@ -94,14 +94,14 @@ namespace TrendyShop.Areas.Identity.Pages.Account
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
-                    if (!await _roleManager.RoleExistsAsync(SD.AdminEndUser))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(SD.AdminEndUser));
-                    }
-                    if (!await _roleManager.RoleExistsAsync(SD.EmployeeEndUser))
-                    {
-                        await _roleManager.CreateAsync(new IdentityRole(SD.EmployeeEndUser));
-                    }
+                    //if (!await _roleManager.RoleExistsAsync(SD.AdminEndUser))
+                    //{
+                    //    await _roleManager.CreateAsync(new IdentityRole(SD.AdminEndUser));
+                    //}
+                    //if (!await _roleManager.RoleExistsAsync(SD.EmployeeEndUser))
+                    //{
+                    //    await _roleManager.CreateAsync(new IdentityRole(SD.EmployeeEndUser));
+                    //}
                     if (Input.UserIsAdmin)
                     {
                         await _userManager.AddToRoleAsync(user, SD.AdminEndUser);
