@@ -6,7 +6,6 @@
 #### Ignore packages file
 packages/
 TrendyShop/bin/
-TrendyShop/wwwroot/
 
 # User-specific files
 *.rsuser
