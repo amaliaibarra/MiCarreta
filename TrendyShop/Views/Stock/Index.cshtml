@@ -31,7 +31,7 @@
                     var str = "#" + lodging.LodgingNumber.ToString() + " " + lodging.Date.ToString("hh:mm tt") + "-" + @lodging.FinalDate.ToString("hh:mm tt");
                     <tr>
                         <td>
-                            @Html.ActionLink(str,"Details","Lodging", new { roomId = lodging.RoomId, _date = lodging.Date})
+                            @Html.ActionLink(str, "Details", "Lodging", new { roomId = lodging.RoomId, _date = lodging.Date })
                         </td>
                         <td class="text-right">@lodging.Customer.Name </td>
                         <td class="text-right">@lodging.ExtraCharge $</td>
@@ -40,34 +40,34 @@
                         <td class="text-right">@lodging.TotalPrice $</td>
                     </tr>
                 }
-            <tr>
-                <td style="background-color: rgb(116,216,216)">
-                    <div class="d-flex">
-                        <h5 class="mb-0"> Total de reservas:</h5> <h5 class="mb-0 ml-auto">@Model.Lodgins.Count</h5>
-                    </div>
-                </td>
-                <td></td>
-                <td style="background-color: rgb(116,216,216)">
-                    <div class="d-flex">
-                        <h5 class="mb-0">Total:</h5> <h5 class="mb-0 ml-auto">@Model.IncomePerDamage $</h5>
-                    </div>
-                </td>
-                <td style="background-color: rgb(116,216,216)">
-                    <div class="d-flex">
-                        <h5 class="mb-0">Total:</h5> <h5 class="mb-0 ml-auto">@Model.IncomePerRent $</h5>
-                    </div>
-                </td>
-                <td style="background-color: rgb(116,216,216)">
-                    <div class="d-flex">
-                        <h5 class="mb-0">Total:</h5> <h5 class="mb-0 ml-auto">@Model.ProductsIncome $</h5>
-                    </div>
-                </td>
-                <td style="background-color: rgb(116,216,216)">
-                    <div class="d-flex">
-                        <h5 class="mb-0">Total:</h5> <h5 class="mb-0 ml-auto">@Model.TotalIncome $</h5>
-                    </div>
-                </td>
-            </tr>
+                <tr>
+                    <td style="background-color: rgb(116,216,216)">
+                        <div class="d-flex">
+                            <h5 class="mb-0"> Total de reservas:</h5> <h5 class="mb-0 ml-auto">@Model.Lodgins.Count</h5>
+                        </div>
+                    </td>
+                    <td></td>
+                    <td style="background-color: rgb(116,216,216)">
+                        <div class="d-flex">
+                            <h5 class="mb-0">Total:</h5> <h5 class="mb-0 ml-auto">@Model.IncomePerDamage $</h5>
+                        </div>
+                    </td>
+                    <td style="background-color: rgb(116,216,216)">
+                        <div class="d-flex">
+                            <h5 class="mb-0">Total:</h5> <h5 class="mb-0 ml-auto">@Model.IncomePerRent $</h5>
+                        </div>
+                    </td>
+                    <td style="background-color: rgb(116,216,216)">
+                        <div class="d-flex">
+                            <h5 class="mb-0">Total:</h5> <h5 class="mb-0 ml-auto">@Model.ProductsIncome $</h5>
+                        </div>
+                    </td>
+                    <td style="background-color: rgb(116,216,216)">
+                        <div class="d-flex">
+                            <h5 class="mb-0">Total:</h5> <h5 class="mb-0 ml-auto">@Model.TotalIncome $</h5>
+                        </div>
+                    </td>
+                </tr>
             </table>
 
             <table class="table table-bordered mb-3">
@@ -98,18 +98,23 @@
                     </td>
                 </tr>
             </table>
-
             <div class="d-flex">
                 <h5 class="mb-0">Ingreso Total: @Model.TotalIncome $</h5>
                 <h5 class="ml-4">Fondo anterior: @Model.LastFund $</h5>
                 <h5 class="ml-4">Total en caja: @Model.TotalCash $</h5>
             </div>
-            <form asp-action="Save" asp-controller="Stock">
-                <h5>Nuevo Fondo: <input id="newFund" type="number" step="any" name="fund" value="@Model.NewFund" /></h5>
-                <button type="submit">Guardar</button>
-                <button type="button" onclick="location.pathname='/Home'">Cancelar</button>
-            </form>
-
+            @if (Model.IsPreviousStock)
+            {
+                <button type="button" onclick="location.pathname='/Stock/PreviousStocks'">Atrás</button>
+            }
+            else
+            {
+                <form asp-action="Save" asp-controller="Stock">
+                    <h5>Nuevo Fondo: <input id="newFund" type="number" step="any" name="fund" value="@Model.NewFund" /></h5>
+                    <button type="submit">Guardar</button>
+                    <button type="button" onclick="location.pathname='/Home'">Cancelar</button>
+                </form>
+            }
         </div>
     </div>
 </div>

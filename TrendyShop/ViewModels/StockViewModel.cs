@@ -19,5 +19,6 @@ namespace TrendyShop.ViewModels
         public float NewFund { get; set; }
         public float MoneyOperationsIncome { get; set; }
         public float TotalCash { get { return TotalIncome + LastFund; } }
+        public bool IsPreviousStock { get; set; }
     }
 }

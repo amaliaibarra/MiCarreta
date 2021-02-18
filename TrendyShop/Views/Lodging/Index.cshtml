@@ -15,7 +15,12 @@
     </div>
 </div>
 
-
+@if (Model.Count() == 0)
+{
+    <div class="text-center">
+        <text> No se encontraron reservaciones cerradas en esta fecha</text>
+    </div>
+}
 @foreach (var l in Model)
 {
     if (l.Purchase != null)

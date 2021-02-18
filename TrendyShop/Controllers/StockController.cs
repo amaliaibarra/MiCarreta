@@ -23,9 +23,11 @@ namespace TrendyShop.Controllers
         {
             context = ctx;
         }
-        public IActionResult Index()
+        public IActionResult Index(DateTime lastStockDate)
         {
-            var lastStock = Statics.GetLastStock(context);
+            bool isPreviousStock = lastStockDate != default ? true : false;
+
+            var lastStock = Statics.GetLastStock(context, default, lastStockDate);
 
             var vm = new StockViewModel
             {
@@ -36,7 +38,8 @@ namespace TrendyShop.Controllers
                 ProductsIncome = Statics.GetPurchasedProductsIncome(context, lastStock.Date),
                 LastFund = lastStock.Fund,
                 LastStockDate = lastStock.Date,
-                MoneyOperationsIncome = Statics.GetMoneyOperationsIncome(context, lastStock.Date)
+                MoneyOperationsIncome = Statics.GetMoneyOperationsIncome(context, lastStock.Date),
+                IsPreviousStock = isPreviousStock
             };
             return View(vm);
         }
@@ -52,6 +55,12 @@ namespace TrendyShop.Controllers
                 );
             context.SaveChanges();
             return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult PreviousStocks()
+        {
+            var result = context.Stocks.ToList();
+            return View(result);
         }
     }
 }

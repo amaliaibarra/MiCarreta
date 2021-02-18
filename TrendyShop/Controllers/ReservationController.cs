@@ -76,8 +76,8 @@ namespace TrendyShop.Controllers
                 InitialDate = initialDate,
                 FinalDate = finalDate,
                 Rooms = dataContext.Rooms.ToList(),
-                InitialDateFormat = initialDate.ToString("yyyy-MM-dd") + "T" + initialDate.ToString("HH:mm:ss"),
-                FinalDateFormat = finalDate.ToString("yyyy-MM-dd") + "T" + finalDate.ToString("HH:mm:ss")
+                InitialDateFormat = initialDate.ToString("yyyy-MM-dd") + "T" + initialDate.ToString("HH:mm"),
+                FinalDateFormat = finalDate.ToString("yyyy-MM-dd") + "T" + finalDate.ToString("HH:mm")
             };
             return View(nrvm);
         }
@@ -96,8 +96,8 @@ namespace TrendyShop.Controllers
                         FinalDate = nrvm.Reservation.FinalDate
                     },
                     Rooms = dataContext.Rooms.ToList(),
-                    InitialDateFormat = nrvm.InitialDate.ToString("yyyy-MM-dd") + "T" + nrvm.InitialDate.ToString("HH:mm:ss"),
-                    FinalDateFormat = nrvm.FinalDate.ToString("yyyy-MM-dd") + "T" + nrvm.FinalDate.ToString("HH:mm:ss")
+                    InitialDateFormat = nrvm.InitialDate.ToString("yyyy-MM-dd") + "T" + nrvm.InitialDate.ToString("HH:mm"),
+                    FinalDateFormat = nrvm.FinalDate.ToString("yyyy-MM-dd") + "T" + nrvm.FinalDate.ToString("HH:mm")
                 };
 
                 if (occupied)

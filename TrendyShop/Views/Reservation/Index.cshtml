@@ -4,47 +4,34 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @model IEnumerable<Reservation>
-<style>
-    #w {
-        width: 100%;
-        margin: 0;
-    }
 
-    #w1 {
-        width: 60%;
-        margin: 0;
-        float: left;
-    }
 
-    w2 {
-        width: 40%;
-        margin: 0;
-        float: right;
-    }
-</style>
+@if (Model.Count() == 0)
+{
+    <div class="text-center">
+        <text> No hay reservaciones pendientes</text>
+    </div>
+}
 
 @foreach (Reservation l in Model)
 {
-
-
     <div class="col-md-6 mx-auto">
         <div class="card h-100">
             <div class="card-header">
                 <h5> Habitación #@l.RoomId</h5>
-
             </div>
             <div class="card-body">
                 <div class="d-flex flex-column">
                     <h5> Cliente: @l.Customer</h5>
-                        <div class="d-flex">
-                            <h5 class="mb-0">Entrada: @l.Date.ToString("hh:mm tt")</h5>
-                            <h5 class="ml-4">Salida: @l.FinalDate.ToString("hh:mm tt")</h5>
-                            <h5 class="ml-4">Fecha: @l.Date.ToString("dd/MM/yyyy")</h5>
-                        </div>
+                    <div class="d-flex">
+                        <h5 class="mb-0">Entrada: @l.Date.ToString("hh:mm tt")</h5>
+                        <h5 class="ml-4">Salida: @l.FinalDate.ToString("hh:mm tt")</h5>
+                        <h5 class="ml-4">Fecha: @l.Date.ToString("dd/MM/yyyy")</h5>
+                    </div>
                     @if (l.IsConfirmed)
                     {
-                            <h5 class="mb-0">Confirmado <i class="fas fa-check"></i></h5>
-                            @*<div class="ml-auto">
+                        <h5 class="mb-0">Confirmado <i class="fas fa-check"></i></h5>
+                        @*<div class="ml-auto">
                                 <button style="background-color: white ">
                                     @Html.ActionLink("Cancelar", "CancelConfirm", "Reservation", new { roomId = l.RoomId, date = l.Date })
                                 </button>
@@ -52,8 +39,8 @@
                     }
                     else
                     {
-                            <h5>Sin Confirmar</h5>
-                            @*<div class="ml-auto">
+                        <h5>Sin Confirmar</h5>
+                        @*<div class="ml-auto">
                                 <button style="background-color: white ">
                                     @Html.ActionLink("Confirmar", "Confirm", "Reservation", new { roomId = l.RoomId, date = l.Date })
                                 </button>
@@ -61,16 +48,14 @@
                     }
                     @if (l.Romantic)
                     {
-                            <h5 class="mb-0">Decoración Romántica <i class="fas fa-heart"></i></h5>
+                        <h5 class="mb-0">Decoración Romántica <i class="fas fa-heart"></i></h5>
                     }
                 </div>
-
-
             </div>
             <div class="card-footer">
                 <div class="d-flex">
                     <form class="mb-0" asp-action="Register" asp-controller="Lodging" asp-route-roomId="@l.RoomId" asp-route-_date="@l.Date">
-                        <button  type="submit">Iniciar</button>
+                        <button type="submit">Iniciar</button>
                     </form>
                     <form class="ml-1" asp-action="Edit" asp-controller="Reservation" asp-route-roomId="@l.RoomId" asp-route-_date="@l.Date">
                         <button type="submit">Editar</button>
@@ -80,41 +65,6 @@
                     </form>
                 </div>
             </div>
-
         </div>
     </div>
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-@*@foreach (Reservation reservation in Model)
-    {
-        <div class="row">
-            <div class="col-lg-12 mb-4">
-                <div class="card h-100">
-                    <h4 class="card-header">#76 @reservation.Customer</h4>
-                    <div class="card-body">
-                        <p class="card-text">@reservation.Date</p>
-                    </div>
-                    <div class="card-footer">*@
-@*<a href="/Home/Add" class="btn btn-primary">Más</a>*@
-@*@Html.ActionLink("Editar", "Edit", "Reservation", new { roomId = reservation.RoomId, date = reservation.Date })
-    @Html.ActionLink("Eliminar", "Delete", "Reservation", new { roomId = reservation.RoomId, date = reservation.Date }, null)*@
-@*@Html.ActionLink("Cerrar Hospedaje", "FinishLodging", "Lodging", new { roomId = reservation.RoomId, date = reservation.Date }, null)*@
-@*@Html.ActionLink("Cerrar Hospedaje", "Purchase", "Room", new { roomId = reservation.RoomId, initialDate = reservation.Date }, null)*@
-
-@*</div>
-                </div>
-            </div>
-        </div>
-    }*@

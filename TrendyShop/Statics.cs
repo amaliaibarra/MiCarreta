@@ -33,7 +33,7 @@ namespace TrendyShop
             initialDate = ValidateInitialDate(initialDate);
             finalDate = ValidateFinalDate(finalDate);
 
-            var stock = context.Stocks.Where(s => s.Date >= initialDate && s.Date <= finalDate).OrderByDescending(s => s.Date);
+            var stock = context.Stocks.Where(s => s.Date >= initialDate && s.Date < finalDate).OrderByDescending(s => s.Date);
             if (stock.Count() == 0)
                 return new StockTaking { Date = DateTime.MinValue, Fund = 0 };
 

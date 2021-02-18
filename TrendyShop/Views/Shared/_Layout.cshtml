@@ -125,8 +125,10 @@
                                     @if (User.IsInRole(SD.AdminEndUser))
                                     {
                                         <a class="dropdown-item " href="/Employee">Empleados</a>
+                                        <a class="dropdown-item " href="/Stock/PreviousStocks">Cuadres Anteriores</a>
                                     }
-                                    <a class="dropdown-item" href="/HouseExpenses">Gastos</a>
+                                    <a class="dropdown-item" href="/Package">Paquete</a>
+                                    <a class="dropdown-item" href="/HouseExpenses">Servicios</a>
                                     <a class="dropdown-item" href="/Incidence">Incidencias</a>
                                     <a class="dropdown-item" href="/Maintenance">Mantenimiento</a>
                                     @if (User.IsInRole(SD.AdminEndUser))
