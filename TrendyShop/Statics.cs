@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using TrendyShop.Models;
 using TrendyShop.Data;
 using Microsoft.EntityFrameworkCore;
-
 namespace TrendyShop
 {
     public static class Statics
