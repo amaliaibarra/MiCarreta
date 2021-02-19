@@ -11,6 +11,7 @@ NuGet.config
 TrendyShop.sln
 TrendyShop/Views/Stock/PreviousStocks.cshtml
 bootstrap-4.3.1-dist/
+TrendyShop/wwwroot/
 
 # User-specific files
 *.rsuser
