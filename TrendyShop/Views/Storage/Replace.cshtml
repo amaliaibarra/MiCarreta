@@ -9,7 +9,7 @@
     <div class="card">
         <div class="card-header">Mover de @Model.SourceName a @Model.DestinationName</div>
         <div class="card-body">
-            <form asp-action="SaveReplace" asp-controller="Storage">
+            <form asp-action="SaveReplace" asp-controller="Storage" id="replaceForm">
                 <table class="table table-bordered">
                     <tr>
                         <th>Producto</th>
@@ -28,10 +28,11 @@
                             <td class="text-right">@Model.ProductsInSource[i].Cost $</td>
                             <td class="text-right">@Model.Source[i]</td>
                             <td class="text-right">@Model.Destination[i]</td>
-                            <td class="text-right"> <input asp-for="AmountToMove[i]" type="number" id="amount"></td>
+                            <td class="text-right"> <input asp-for="AmountToMove[i]" type="number"></td>
                         </tr>
                         @Html.HiddenFor(rvm => rvm.ProductsInSource[i].Name)
                         @Html.HiddenFor(rvm => rvm.ProductsInSource[i].Cost)
+                        @Html.HiddenFor(rvm => rvm.Source[i])
                     }
                 </table>
                 @Html.HiddenFor(rvm => rvm.SourceId)
@@ -40,10 +41,38 @@
             </form>
         </div>
         <div class="card-footer">
-            <button onclick="location.pathname = 'Room'">Listo</button>
+            <button onclick="location.pathname = 'Storage'">Listo</button>
         </div>
     </div>
 </div>
 <script>
-    document.getElementById("amount").select();
+    document.getElementById("AmountToMove_0_").select();
+    function validateForm() {
+        var errorFound = false;
+        for (var i = 0; i < @Model.AmountToMove.Count(); i++) {
+            var id = 'AmountToMove_' + i + '_';
+            console.log(id);
+            var input = document.getElementById(id);
+            console.log(input.value);
+            console.log('Source_' + i + '_');
+            var amount = document.getElementById('Source_' + i + '_');
+            console.log(amount);
+            console.log(amount.value);
+            console.log(input.value > amount.value);
+           if (parseFloat(input.value) < 0 || parseFloat(input.value) > parseFloat(amount.value)) {
+                errorFound = true;
+                input.style.borderColor = "red";
+            }
+            else {
+                input.style.borderColor = "black";
+            }
+        }
+
+        if (errorFound) {
+            alert("Chequee que la cantidad a transferir sea un número positivo menor que la disponible en habitación");
+        }
+        else {
+            document.getElementById('replaceForm').submit();
+        }
+    }
 </script>
