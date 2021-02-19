@@ -18,7 +18,7 @@
                         <th>En @Model.DestinationName</th>
                         <th>
                             Transferir
-                            @*<button class="ml-5" type="submit">Mover</button>*@
+                            <button class="ml-5" type="submit">Mover</button>
                         </th>
                     </tr>
                     @for (int i = 0; i < Model.AmountToMove.Length; i++)
@@ -41,7 +41,7 @@
             </form>
         </div>
         <div class="card-footer">
-            <button onclick="location.pathname = 'Storage'">Listo</button>
+            <button onclick="location.pathname = 'Room'">Listo</button>
         </div>
     </div>
 </div>
