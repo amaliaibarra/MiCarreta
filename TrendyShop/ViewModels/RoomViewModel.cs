@@ -15,5 +15,9 @@ namespace TrendyShop.ViewModels
         public float[] AmountToAdd2 { get; set; }
         public float[] AmountToAdd3 { get; set; }
         public List<NamedRoom> RoomList { get; set; }
+        public int SourceId = 4;
+        public int DestinationId1 = 1;
+        public int DestinationId2 = 2;
+        public int DestinationId3 = 3;
     }
 }
