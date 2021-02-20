@@ -1,0 +1,61 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model List<IdentityUser>;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="col-lg-6 mx-auto">
+    <div class="card">
+        <h3 class="card-header text-center">Usuarios</h3>
+        <div class="card-body">
+
+            @foreach (var user in Model)
+            {
+                <div class="d-flex">
+                    <h4>@user.UserName</h4>
+                    <div class="ml-auto">
+                        <button type="button" onclick="setUserId('@user.Id')">Eliminar</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalTitle">Confirmación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Está seguro que desea borrar esta cuenta?
+            </div>
+            <div class="modal-footer">
+                <button onclick="submitModal()">Continuar</button>
+                <button type="button" class="red-button" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form id="forms" hidden="hidden">
+</form>
+<script>
+    var userId = "";
+    function setUserId(id) {
+        userId = id;
+        $('#confirmationModal').modal();
+    }
+    function submitModal() {
+        var form = document.getElementById('forms');
+        form.setAttribute("action", "Account/DeleteAccount?userId=" + userId);
+        form.setAttribute("method", "post");
+
+        form.submit();
+    }
+</script>

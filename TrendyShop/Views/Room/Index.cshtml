@@ -24,12 +24,13 @@
                             @foreach (var p in room)
                             {
                                 <tr>
-                                    <td  style="border: none">@p.Name</td>
+                                    <td style="border: none">@p.Name</td>
                                     <td style="border: none">@p.GastronomicProduct.Price $</td>
                                     <td style="border: none">
-                                        <form asp-action="UpdateQuantity" asp-route-cost="@p.Cost" asp-route-name="@p.Name" asp-route-roomId="@p.RoomId">
+                                        @*<form asp-action="UpdateQuantity" asp-route-cost="@p.Cost" asp-route-name="@p.Name" asp-route-roomId="@p.RoomId">
                                             <input style="width:50px" type="number" name="quantity" value="@p.Amount" />
-                                        </form>
+                                        </form>*@
+                                        @p.Amount
                                     </td>
                                     <td style="border: none">@Html.ActionLink("", "Delete", "Room", new { cost = p.Cost, name = p.Name, roomId = p.RoomId }, new { @class = "fas fa-trash-alt" })</td>
                                 </tr>
@@ -38,15 +39,27 @@
                     }
                     @if (id == 1)
                     {
-                        <button onclick="setProducts(1)">Añadir</button>
+                        <form asp-action="Replace" asp-controller="Storage" asp-route-sourceId="@Model.SourceId" asp-route-destinationId="1">
+
+                            <button type="submit">Reponer</button>
+
+                        </form>
                     }
                     else if (id == 2)
                     {
-                        <button onclick="setProducts(2)">Añadir</button>
+                        <form asp-action="Replace" asp-controller="Storage" asp-route-sourceId="@Model.SourceId" asp-route-destinationId="2">
+
+                            <button type="submit">Reponer</button>
+
+                        </form>
                     }
                     else
                     {
-                        <button onclick="setProducts(3)">Añadir</button>
+                        <form asp-action="Replace" asp-controller="Storage" asp-route-sourceId="@Model.SourceId" asp-route-destinationId="3">
+
+                            <button type="submit">Reponer</button>
+
+                        </form>
                     }
                 </div>
             </div>
