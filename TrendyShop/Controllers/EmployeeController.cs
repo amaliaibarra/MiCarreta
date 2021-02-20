@@ -15,15 +15,17 @@ namespace TrendyShop.Controllers
     public class EmployeeController : Controller
     {
         private DataContext context;
+        private UsersContext usersContext;
 
-        public EmployeeController(DataContext ctx)
+        public EmployeeController(DataContext ctx, UsersContext usersContext)
         {
             context = ctx;
+            this.usersContext = usersContext;
         }
         public IActionResult Index() //Me Lista a los empleados
         {
-
-            var employees = context.Employees.ToList();
+            var logAccessEmployees = usersContext.Users.Select(u => u.Id).ToList();
+            var employees = context.Employees.Where(e => logAccessEmployees.Contains(e.EmployeeId)).ToList();
             return View(employees);
         }
 
