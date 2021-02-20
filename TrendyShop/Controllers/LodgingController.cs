@@ -65,6 +65,7 @@ namespace TrendyShop.Controllers
 
         public IActionResult Register(int roomId, DateTime _date)
         {
+            RegisterViewModel rvm = new RegisterViewModel();
             var reservation = dataContext.Reservations.Single(r => r.RoomId == roomId && r.Date == _date);
             DateTime now = DateTime.Now;
             Lodging lodging = new Lodging
@@ -83,7 +84,27 @@ namespace TrendyShop.Controllers
                 Romantic = reservation.Romantic,
                 LodgingNumber = dataContext.Lodgings.Count() + 1,
             };
-            return View(lodging);
+
+            rvm.Lodging = lodging;
+
+            Dictionary<string, List<LodgingIncidence>> clientIncidence = new Dictionary<string, List<LodgingIncidence>>();
+
+            foreach (var customer in dataContext.Customers.ToArray())
+            {
+                List<Incidence> incidences = new List<Incidence>();
+
+                var blockedDate = customer.LastBlockedDate;
+                var CustomerIncidences = dataContext.LodgingIncidences.Include(l => l.Incidence).Where(l => (l.Lodging.Date.Day == blockedDate.Day && l.Lodging.Date.Month == blockedDate.Month
+                                                                          && l.Lodging.Date.Year == blockedDate.Year) && l.Lodging.CustomerId == customer.CustomerId).ToList();
+
+                clientIncidence.Add(customer.CustomerId, CustomerIncidences);
+            }
+
+            rvm.clientIncidences = clientIncidence;
+            rvm.blockedCustomers = clientIncidence.Keys.ToArray();
+
+            return View(rvm);
+
         }
 
         public IActionResult Details(int roomId, DateTime _date)
@@ -164,85 +185,36 @@ namespace TrendyShop.Controllers
             return stimateRentCost;
         }
 
-        [HttpPost]
-        public IActionResult Save(Lodging lodging)
-        {
-            //Avisar al usuario
-            if (!ModelState.IsValid)
-            {
-                Lodging _lodging = new Lodging
-                {
-                    RoomId = lodging.RoomId,
-                    Date = lodging.Date,
-                    FinalDate = lodging.FinalDate,
-                    Customer = new Customer
-                    {
-                        Name = lodging.Customer.Name,
-                        Phone = lodging.Customer.Phone
-                    },
-                    Companion = lodging.Companion,
-                    ExtraCharge = 0,
-                    RentCost = lodging.RentCost,
-                    //TotalPrice = lodging.TotalPrice,
-                    Romantic = lodging.Romantic,
-                    ActualIDate = lodging.ActualIDate//,
-                                                     //IsDouble = lodging.IsDouble//,
-                                                     //Consumption = lodging.Consumption
-                };
-                return View("Register", _lodging);
-            }
 
-            var reservation = dataContext.Reservations.Find(lodging.RoomId, lodging.Date);
+        public IActionResult Save(RegisterViewModel rvm)
+        {
+
+            var reservation = dataContext.Reservations.Find(rvm.Lodging.RoomId, rvm.Lodging.Date);
             reservation.IsActive = true;
 
-            var customer = dataContext.Customers.Find(lodging.Customer.CustomerId);
+            var customer = dataContext.Customers.Find(rvm.Lodging.Customer.CustomerId);
             if (customer == null)
             {
-                lodging.Customer.LastEntrance = DateTime.Today;
-                dataContext.Customers.Add(lodging.Customer);
+                rvm.Lodging.Customer.LastEntrance = DateTime.Today;
+                dataContext.Customers.Add(rvm.Lodging.Customer);
                 dataContext.SaveChanges();
             }
             else
             {
                 customer.LastEntrance = DateTime.Today;
-                customer.Phone = lodging.Customer.Phone;
-                lodging.Customer = customer;
+                customer.Phone = rvm.Lodging.Customer.Phone;
+                rvm.Lodging.Customer = customer;
                 dataContext.SaveChanges();
             }
-            if (lodging.Customer.IsBlocked)
-            {
-                Lodging _lodging = new Lodging
-                {
-                    RoomId = lodging.RoomId,
-                    Date = lodging.Date,
-                    Customer = customer,
-                    //guardar los valores viejos
-                    Companion = lodging.Companion,
-                    ExtraCharge = 0,
-                    RentCost = lodging.RentCost,
-                    //TotalPrice = lodging.TotalPrice,
-                    Romantic = lodging.Romantic,
-                    ActualIDate = lodging.ActualIDate
-                };
-                return View("Register", _lodging);
-            }
 
-            lodging.CustomerId = lodging.Customer.CustomerId;
-            lodging.Active = true;
-            dataContext.Lodgings.Add(lodging);
+
+            rvm.Lodging.CustomerId = rvm.Lodging.Customer.CustomerId;
+            rvm.Lodging.Active = true;
+            dataContext.Lodgings.Add(rvm.Lodging);
             dataContext.SaveChanges();
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult ConsentBlockedUser(Lodging lodging)
-        {
-            //Manejar Excepcion: Si ponen un nombre distinto al que está en la bd
-            lodging.CustomerId = lodging.Customer.CustomerId;
-            lodging.Active = true;
-            dataContext.Lodgings.Add(lodging);
-            dataContext.SaveChanges();
-            return RedirectToAction("Index", "Home");
-        }
 
         public IActionResult FinishLodging(/*int roomId, DateTime date*/PurchaseViewModel pvm)
         {
@@ -338,7 +310,24 @@ namespace TrendyShop.Controllers
             lodgingToClose.Active = false;
             lodgingToClose.ExtraCharge = clvm.Lodging.ExtraCharge;
             //lodgingToClose.TotalPrice = clvm.Lodging.TotalPrice;//2:9
+
+
+
+            //lodgingToClose.Customer.IsBlocked = clvm.Lodging.Customer.IsBlocked;
+
+            //// Busco todos los clientes bloquedos
+            var blockedCustomers = dataContext.Customers.Where(c => c.IsBlocked == true);
             lodgingToClose.Customer.IsBlocked = clvm.Lodging.Customer.IsBlocked;
+
+            if (lodgingToClose.Customer.IsBlocked)
+            {
+                if (!(blockedCustomers.Any(c => c.CustomerId == lodgingToClose.CustomerId)))
+                {
+                    lodgingToClose.Customer.LastBlockedDate = DateTime.Today;
+                }
+
+
+            }
 
             string employeeId = userManager.GetUserId(User);
             lodgingToClose.EmployeeId = employeeId;
