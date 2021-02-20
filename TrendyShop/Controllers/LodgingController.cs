@@ -313,7 +313,7 @@ namespace TrendyShop.Controllers
 
 
 
-            //lodgingToClose.Customer.IsBlocked = clvm.Lodging.Customer.IsBlocked;
+           
 
             //// Busco todos los clientes bloquedos
             var blockedCustomers = dataContext.Customers.Where(c => c.IsBlocked == true);

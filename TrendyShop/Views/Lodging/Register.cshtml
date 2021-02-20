@@ -81,7 +81,7 @@
 
             <div class="modal-body">
 
-                <p>El cliente actual está bloqueado por:</p>
+                <p>El cliente actual está bloqueado:</p>
 
                 <div id="print"><ul></ul></div>
             </div>
@@ -176,7 +176,13 @@
     function getIncidences(customer) {
         var dict = @Html.Raw(Json.Serialize(Model.clientIncidences));
         var LodgIncArraylength = dict[customer].length;
-        document.getElementById("print").innerHTML = "";
+        if (LodgIncArraylength > 0) {
+            document.getElementById("print").innerHTML = "<p>Incidencias:</p>";
+            
+        } else {
+           document.getElementById("print").innerHTML = "";
+        }
+        
         for (var i = 0; i < LodgIncArraylength; i++) {
 
             incList = "<li>" + dict[customer][i].incidence.subject + "</li>";
