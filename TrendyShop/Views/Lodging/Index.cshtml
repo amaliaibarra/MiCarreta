@@ -3,7 +3,7 @@
     ViewData["Title"] = "Reservaciones";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model IEnumerable<LodgingAndPurchase>
+@model PaginatedList<LodgingAndPurchase>
 
 <h1 class="text-center">Reservaciones</h1>
 <div class="d-flex">
@@ -119,3 +119,24 @@
         </div>
     }
 }
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disable" : "";
+    var nextDisabled = !Model.HasNextPage ? "disable" : "";
+}
+
+<div class="col-lg-10 mb-4 mx-auto">
+    <a asp-action="Index" asp-controller="Lodging"
+       asp-route-page="@(Model.PageIndex - 1)"
+       asp-route-currentSearchDate="@ViewData["CurrentSearchDate"]"
+       class="btn btn-default @prevDisabled">
+        Anterior
+    </a>
+
+    <a asp-action="Index" asp-controller="Lodging"
+       asp-route-page="@(Model.PageIndex + 1)"
+       asp-route-currentSearchDate="@ViewData["CurrentSearchDate"]"
+       class="btn btn-default @nextDisabled">
+        Siguiente
+    </a>
+</div>

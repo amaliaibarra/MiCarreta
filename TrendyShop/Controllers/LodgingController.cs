@@ -23,10 +23,22 @@ namespace TrendyShop.Controllers
             userManager = _userManager;
         }
 
-        public IActionResult Index(DateTime initialDate)
+        public async Task<IActionResult> Index(int? page, DateTime initialDate, DateTime currentSearchDate)
         {
+            if (initialDate != default)
+            {
+                page = 1;
+            }
+            else
+            {
+                initialDate = currentSearchDate;
+            }
+
+            ViewData["CurrentSearchDate"] = initialDate;
+
             if (initialDate == default)
                 initialDate = DateTime.Today;
+
 
             var purchasePerLodgins = dataContext.PurchasePerLodgings
                 .Include(p => p.Lodging)
@@ -57,9 +69,12 @@ namespace TrendyShop.Controllers
                 lodgingsAndPurchases.Add(new LodgingAndPurchase { Lodging = l });
 
             lodgingsAndPurchases.Sort((l1, l2) => l1.Compare(l2));
+            lodgingsAndPurchases.Reverse();
 
-            return View(lodgingsAndPurchases);
-           
+            int pageSize = 3;
+            return View(await PaginatedList<LodgingAndPurchase>.CreateAsync(lodgingsAndPurchases, page ?? 1, pageSize));
+
+
         }
 
 
