@@ -8,7 +8,7 @@ using TrendyShop.Data;
 using TrendyShop.Models;
 using TrendyShop.Utility;
 using TrendyShop.ViewModels;
-//using Syncfusion.XlsIO;                              PAQUETE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//using Syncfusion.XlsIO;         //Agregar Paquete
 using System.IO;
 
 namespace TrendyShop.Controllers
@@ -165,7 +165,7 @@ namespace TrendyShop.Controllers
                 var lodgings = Statics.GetLodgings(context, initialDate, finalDate);
                 lodgingsPerMonth[i] = lodgings.Count;                                       //
 
-                dailyLodgingsPerMonth[i] = String.Format("{0:0.00}", ((float)lodgingsPerMonth[i] / (float)finalDate.Day));       //   Cambiado a string
+                dailyLodgingsPerMonth[i] = String.Format("{0:0.00}", ((float)lodgingsPerMonth[i] / (float)finalDate.Day));       //   Camiado a string
 
                 var doubleLodg = lodgings.FindAll(dl => dl.IsDouble == true);        //
                 if (doubleLodg == null)
@@ -208,6 +208,9 @@ namespace TrendyShop.Controllers
 
 
 
+
+
+
             YearStatisticsViewModel ys = new YearStatisticsViewModel
             {
                 Year = year,
@@ -236,7 +239,10 @@ namespace TrendyShop.Controllers
             return ys;
         }
 
+        //static void ExportAll()
+        //{
 
+        //}
 
     }
 }
