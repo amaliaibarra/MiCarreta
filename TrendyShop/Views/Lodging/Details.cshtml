@@ -38,7 +38,8 @@
                 <h5>Decoración Romántica <i class="fas fa-heart"></i></h5>
             }
 
-            <h5>Renta: @Model.Lodging.RentCost $</h5>
+            <h5>Prepagado: @Model.Lodging.Prepaid $</h5>
+
 
             @if (Model.Purchase.Count > 0)
             {
@@ -90,7 +91,13 @@
                 </table>
             }
 
-            <h5>Total: @Model.Lodging.TotalPrice $</h5>
+            @if (!Model.Lodging.Active)
+            {
+                <h5>Renta: @Model.Lodging.RentCost $</h5>
+                <h5>Total: @Model.Lodging.TotalPrice $</h5>
+            }
+
+
         </div>
         <div class="card-footer d-flex">
             @*<div class="row">*@
