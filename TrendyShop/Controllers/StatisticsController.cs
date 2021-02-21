@@ -8,7 +8,7 @@ using TrendyShop.Data;
 using TrendyShop.Models;
 using TrendyShop.Utility;
 using TrendyShop.ViewModels;
-//using Syncfusion.XlsIO;                              PAQUETE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+using Syncfusion.XlsIO;         
 using System.IO;
 
 namespace TrendyShop.Controllers
@@ -48,66 +48,66 @@ namespace TrendyShop.Controllers
         }
 
 
-        //public IActionResult ExportToExcel(int year, YearStatisticsViewModel yearSs)
-        //{
-        //    List<YearStatistics> yearStatisticsTable = new List<YearStatistics>();
-        //    YearStatisticsViewModel yearS = allYearStatisitics.Find(y => y.Year == year);
+        public IActionResult ExportToExcel(int year, YearStatisticsViewModel yearSs)
+        {
+            List<YearStatistics> yearStatisticsTable = new List<YearStatistics>();
+            YearStatisticsViewModel yearS = allYearStatisitics.Find(y => y.Year == year);
 
-        //    for (int i = 1; i < 13; i++)
-        //    {
-        //        YearStatistics row = new YearStatistics
-        //        {
-        //            Month = yearS.Months[i],
-        //            Lodgings = yearS.LodgingsPerMonth[0],
-        //            DoubleLodgings = yearS.DoubleLodgingsPerMonth[i],
-        //            DailyLodgings = yearS.DailyLodgingsPerMonth[i],
-        //            RentIncome = yearS.RentIncomePerMoth[i],
-        //            ConsumptionIncome = yearS.ConsumptionIncomePerMonth[i],
-        //            ConsumptionProfit = yearS.ConsumptionProfitPerMonth[i],
-        //            DamageIncome = yearS.DamageIncomePerMoth[i],
-        //            GrossIncome = yearS.GrossIncomePerMonth[i],
-        //            Salary = yearS.SalaryPerMoth[i],
-        //            HouseExpenses = yearS.HouseExpensesPerMoth[i],
-        //        };
-        //        yearStatisticsTable.Add(row);
-        //    }
+            for (int i = 1; i < 13; i++)
+            {
+                YearStatistics row = new YearStatistics
+                {
+                    Month = yearS.Months[i],
+                    Lodgings = yearS.LodgingsPerMonth[i],
+                    DoubleLodgings = yearS.DoubleLodgingsPerMonth[i],
+                    DailyLodgings = yearS.DailyLodgingsPerMonth[i],
+                    RentIncome = yearS.RentIncomePerMoth[i],
+                    ConsumptionIncome = yearS.ConsumptionIncomePerMonth[i],
+                    ConsumptionProfit = yearS.ConsumptionProfitPerMonth[i],
+                    DamageIncome = yearS.DamageIncomePerMoth[i],
+                    GrossIncome = yearS.GrossIncomePerMonth[i],
+                    Salary = yearS.SalaryPerMoth[i],
+                    HouseExpenses = yearS.HouseExpensesPerMoth[i],
+                };
+                yearStatisticsTable.Add(row);
+            }
 
-        //    using (ExcelEngine excelEngine = new ExcelEngine())
-        //    {
-        //        IApplication application = excelEngine.Excel;
-        //        application.DefaultVersion = ExcelVersion.Excel2013;
+            using (ExcelEngine excelEngine = new ExcelEngine())
+            {
+                IApplication application = excelEngine.Excel;
+                application.DefaultVersion = ExcelVersion.Excel2013;
 
-        //        //Create a new workbook
-        //        IWorkbook workbook = application.Workbooks.Create(1);
-        //        IWorksheet sheet = workbook.Worksheets[0];
+                //Create a new workbook
+                IWorkbook workbook = application.Workbooks.Create(1);
+                IWorksheet sheet = workbook.Worksheets[0];
 
 
-        //        sheet.ImportData(yearStatisticsTable, 2, 1, false);
+                sheet.ImportData(yearStatisticsTable, 2, 1, false);
 
-        //        sheet.Range["A1"].Text = year.ToString();
-        //        sheet.Range["B1"].Text = "Reservas";
-        //        sheet.Range["C1"].Text = "Reservas Dobles";
-        //        sheet.Range["D1"].Text = "Reservas Diarias";
-        //        sheet.Range["E1"].Text = "Ingreso x Renta";
-        //        sheet.Range["F1"].Text = "Consumo";
-        //        sheet.Range["G1"].Text = "Ganacia x Consumo";
-        //        sheet.Range["H1"].Text = "Ingreso x Daños";
-        //        sheet.Range["I1"].Text = "Ingreso Bruto";
-        //        sheet.Range["J1"].Text = "Salario";
-        //        sheet.Range["K1"].Text = "Otros Gastos";
+                sheet.Range["A1"].Text = year.ToString();
+                sheet.Range["B1"].Text = "Reservas";
+                sheet.Range["C1"].Text = "Reservas Dobles";
+                sheet.Range["D1"].Text = "Reservas Diarias";
+                sheet.Range["E1"].Text = "Ingreso x Renta";
+                sheet.Range["F1"].Text = "Consumo";
+                sheet.Range["G1"].Text = "Ganacia x Consumo";
+                sheet.Range["H1"].Text = "Ingreso x Daños";
+                sheet.Range["I1"].Text = "Ingreso Bruto";
+                sheet.Range["J1"].Text = "Salario";
+                sheet.Range["K1"].Text = "Otros Gastos";
 
-        //        //Saving
-        //        string name = "Estadísticas" + " " + year.ToString() + ".xlsx";
-        //        string path = @"C:\Users\Sandra\Desktop\Mi Carreta  actual\" + name;
+                //Saving
+                string name = "Estadísticas" + " " + year.ToString() + ".xlsx";
+                string path = @"C:\Users\Sandra\Desktop\MiCarretaFinal\" + name;
 
-        //        FileStream file = new FileStream(path, FileMode.Create, FileAccess.ReadWrite);
-        //        workbook.SaveAs(file);
+                FileStream file = new FileStream(path, FileMode.Create, FileAccess.ReadWrite);
+                workbook.SaveAs(file);
 
-        //        file.Dispose();
-        //    }
+                file.Dispose();
+            }
 
-        //    return RedirectToAction("Index", "Statistics");
-        //}
+            return RedirectToAction("Index", "Statistics");
+        }
 
 
         static YearStatisticsViewModel GetYearStatistics(int year, DataContext context)
@@ -165,7 +165,7 @@ namespace TrendyShop.Controllers
                 var lodgings = Statics.GetLodgings(context, initialDate, finalDate);
                 lodgingsPerMonth[i] = lodgings.Count;                                       //
 
-                dailyLodgingsPerMonth[i] = String.Format("{0:0.00}", ((float)lodgingsPerMonth[i] / (float)finalDate.Day));       //   Cambiado a string
+                dailyLodgingsPerMonth[i] = String.Format("{0:0.00}", ((float)lodgingsPerMonth[i] / (float)finalDate.Day));       //   Camiado a string
 
                 var doubleLodg = lodgings.FindAll(dl => dl.IsDouble == true);        //
                 if (doubleLodg == null)
@@ -208,6 +208,9 @@ namespace TrendyShop.Controllers
 
 
 
+
+
+
             YearStatisticsViewModel ys = new YearStatisticsViewModel
             {
                 Year = year,
@@ -236,7 +239,10 @@ namespace TrendyShop.Controllers
             return ys;
         }
 
+        //static void ExportAll()
+        //{
 
+        //}
 
     }
 }

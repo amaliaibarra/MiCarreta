@@ -84,9 +84,11 @@
                                             </tr>
                                         }
                                     </table>
-                                    @*<div class="card-footer">
-                                            @Html.ActionLink("Exportar a Excel", "ExportToExcel", "Statistics", new { yearS = ys})
-                                        </div>*@
+                                    <form asp-action="ExportToExcel" asp-controller="Statistics" asp-route-year="@ys.Year" asp-route-yearSs="@ys">
+
+                                        <button type="submit">Exportar a Excel</button>
+                                    </form>
+
                                 </div>
                             </div>
                         </div>
