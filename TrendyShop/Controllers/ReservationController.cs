@@ -18,18 +18,32 @@ namespace TrendyShop.Controllers
         {
             dataContext = ctx;
         }
-        
-        public IActionResult Index()
+
+        public async Task<IActionResult> Index(int? page, DateTime initialDate, DateTime currentSearchDate)
         {
-            //var reservations = dataContext.Reservations.
-            //    Where(r => r.Date.Year >= DateTime.Today.Year && r.Date.Month >= DateTime.Today.Month)
-            //    .ToList();
-            //reservations.Sort((r1, r2) => r1.Date.CompareTo(r2.Date));
+            if (initialDate != default)
+            {
+                page = 1;
+            }
+            else
+            {
+                initialDate = currentSearchDate;
+            }
+
+            ViewData["CurrentSearchDate"] = initialDate;
+
+            if (initialDate == default)
+                initialDate = DateTime.Today;
+
             var reservations = dataContext.Reservations.
-               Where(r => r.Date.Year >= DateTime.Today.Year && r.Date.Month >= DateTime.Today.Month)
+               Where(r => r.Date >= initialDate)
                .ToList();
             reservations.Sort((r1, r2) => r1.Date.CompareTo(r2.Date));
-            return View(reservations);
+
+            int pageSize = 3;
+            return View(await PaginatedList<Reservation>.CreateAsync(reservations, page ?? 1, pageSize));
+
+           
 
         }
 

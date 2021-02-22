@@ -6,9 +6,11 @@ using TrendyShop.Models;
 using TrendyShop.Data;
 using Microsoft.EntityFrameworkCore;
 namespace TrendyShop
-{
+{ 
     public static class Statics
     {
+
+       
         #region Date validation
         private static DateTime ValidateInitialDate(DateTime initialDate)
         {

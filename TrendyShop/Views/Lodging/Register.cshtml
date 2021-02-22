@@ -1,80 +1,74 @@
-﻿@model TrendyShop.Models.Lodging
+﻿@model TrendyShop.ViewModels.RegisterViewModel
 @{
     ViewData["Title"] = "RegistrarHospedaje";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 
+
 <div class="col-lg-4 mx-auto">
     <div class="card">
         <div class="card-body">
-            @using (Html.BeginForm("Save", "Lodging"))
+
+            @using (Html.BeginForm("Save", "Lodging", FormMethod.Post, new { id = "registerForm" }))
             {
+
                 <div class=" form-group">
-                    @Html.LabelFor(l => l.Customer.Name)
-                    @Html.TextBoxFor(l => l.Customer.Name, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(l => l.Customer.Name)
+                    @Html.LabelFor(l => l.Lodging.Customer.Name)
+                    @Html.TextBoxFor(l => l.Lodging.Customer.Name, new { @class = "form-control", @id = "customerName" })
+                    @Html.ValidationMessageFor(l => l.Lodging.Customer.Name)
                 </div>
 
                 <div class=" form-group">
-                    @Html.LabelFor(l => l.Customer.CustomerId)
-                    @Html.TextBoxFor(l => l.Customer.CustomerId, new { @class = "form-control", @autofocus = true })
-                    @Html.ValidationMessageFor(l => l.Customer.CustomerId)
+                    @Html.LabelFor(l => l.Lodging.Customer.CustomerId)
+                    @Html.TextBoxFor(l => l.Lodging.Customer.CustomerId, new { @class = "form-control", @id = "customerId", @autofocus = true })
+                    @Html.ValidationMessageFor(l => l.Lodging.Customer.CustomerId)
                 </div>
 
                 <div class=" form-group">
-                    @Html.LabelFor(l => l.Companion)
-                    @Html.TextBoxFor(l => l.Companion, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(l => l.Companion)
+                    @Html.LabelFor(l => l.Lodging.Companion)
+                    @Html.TextBoxFor(l => l.Lodging.Companion, new { @class = "form-control", @id = "customerCompanion" })
+                    @Html.ValidationMessageFor(l => l.Lodging.Companion)
                 </div>//antes en hospedaje
 
                 <div class=" form-group">
-                    @Html.LabelFor(l => l.Customer.Phone)
-                    @Html.TextBoxFor(l => l.Customer.Phone, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(l => l.Customer.Phone)
+                    @Html.LabelFor(l => l.Lodging.Customer.Phone)
+                    @Html.TextBoxFor(l => l.Lodging.Customer.Phone, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(l => l.Lodging.Customer.Phone)
                 </div>
 
                 <div class=" form-group">
-                    @Html.LabelFor(l => l.Prepaid)
-                    @Html.TextBoxFor(l => l.Prepaid, new { @class = "form-control" })
-                    @Html.ValidationMessageFor(l => l.Prepaid)
+                    @Html.LabelFor(l => l.Lodging.Prepaid)
+                    @Html.TextBoxFor(l => l.Lodging.Prepaid, new { @class = "form-control", @id = "prepaid" })
+                    @Html.ValidationMessageFor(l => l.Lodging.Prepaid)
                 </div>
 
                 <div class=" form-group">
-                    @Html.LabelFor(l => l.ActualIDate)
-                    @Html.TextBoxFor(l => l.ActualIDate, new { @class = "form-control", @type = "datetime-local", @id = "actualIDate" })
-                    @Html.ValidationMessageFor(l => l.ActualIDate)
+                    @Html.LabelFor(l => l.Lodging.ActualIDate)
+                    @Html.TextBoxFor(l => l.Lodging.ActualIDate, new { @class = "form-control", @type = "datetime-local", @id = "actualIDate" })
+                    @Html.ValidationMessageFor(l => l.Lodging.ActualIDate)
                 </div>
 
 
-                @Html.HiddenFor(l => l.RoomId)
-                @Html.HiddenFor(l => l.Date)
-                @Html.HiddenFor(l => l.FinalDate)
-                @Html.HiddenFor(l => l.RentCost)
-                @Html.HiddenFor(l => l.ExtraCharge)
-                @Html.HiddenFor(l => l.TotalPrice)
-                @Html.HiddenFor(l => l.IsDouble)
-                @Html.HiddenFor(l => l.LodgingNumber)
-                @Html.HiddenFor(l => l.Romantic)
+                @Html.HiddenFor(l => l.Lodging.RoomId)
+                @Html.HiddenFor(l => l.Lodging.Date)
+                @Html.HiddenFor(l => l.Lodging.FinalDate)
+                @Html.HiddenFor(l => l.Lodging.RentCost)
+                @Html.HiddenFor(l => l.Lodging.ExtraCharge)
+                @Html.HiddenFor(l => l.Lodging.TotalPrice)
+                @Html.HiddenFor(l => l.Lodging.IsDouble)
+                @Html.HiddenFor(l => l.Lodging.LodgingNumber)
+                @Html.HiddenFor(l => l.Lodging.Romantic)
 
 
-                <button type="submit">Continuar</button>
+                <button type="button" onclick="validateForm()">Continuar</button>
                 <button type="button" onclick="location.pathname='/Home'">Cancelar</button>
             }
         </div>
     </div>
 </div>
 
-<div>
-    @if (Model.Customer.IsBlocked)
-    {
-        @section scripts {
-            <script type="text/javascript">
-                $('#warningModal').modal()
-            </script>
-        }
-    }
-</div>
+
 <div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -84,25 +78,35 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                <p>El cliente actual está bloqueado por:</p>
-            </div>
-            <div class="modal-footer">
-                <form asp-action="ConsentBlockedUser">
-                    @Html.HiddenFor(l => l.Customer.Name)
-                    @Html.HiddenFor(l => l.Customer.IsBlocked)
-                    @Html.HiddenFor(l => l.Customer.CustomerId)
-                    @Html.HiddenFor(l => l.Customer.LastEntrance)
-                    @Html.HiddenFor(l => l.Customer.Phone)
 
-                    @Html.HiddenFor(l => l.RoomId)
-                    @Html.HiddenFor(l => l.Active)
-                    @Html.HiddenFor(l => l.Consumption)
-                    @Html.HiddenFor(l => l.Date)
-                    @Html.HiddenFor(l => l.Prepaid)
-                    @Html.HiddenFor(l => l.RentCost)
-                    @Html.HiddenFor(l => l.LodgingNumber)
-                    <button type="submit">Continuar</button>
+            <div class="modal-body">
+
+                <p>El cliente actual está bloqueado:</p>
+
+                <div id="print"><ul></ul></div>
+            </div>
+
+            <div class="modal-footer">
+                <form asp-action="Save">
+                    @Html.HiddenFor(l => l.Lodging.Customer.Name)
+                    @Html.HiddenFor(l => l.Lodging.Customer.IsBlocked)
+                    @Html.HiddenFor(l => l.Lodging.Customer.CustomerId)
+                    @Html.HiddenFor(l => l.Lodging.Customer.LastEntrance)
+                    @Html.HiddenFor(l => l.Lodging.Customer.Phone)
+
+                    @Html.HiddenFor(l => l.Lodging.RoomId)
+                    @Html.HiddenFor(l => l.Lodging.Active)
+                    @Html.HiddenFor(l => l.Lodging.Consumption)
+                    @Html.HiddenFor(l => l.Lodging.Date)
+                    @Html.HiddenFor(l => l.Lodging.Prepaid)
+                    @Html.HiddenFor(l => l.Lodging.RentCost)
+                    @Html.HiddenFor(l => l.Lodging.LodgingNumber)
+
+                    @Html.HiddenFor(l => l.Lodging.ActualIDate)
+                    @Html.HiddenFor(l => l.Lodging.ActualFDate)
+                    @Html.HiddenFor(l => l.Lodging.Companion)
+
+                    <button type="button" onclick="modalSubmit()">Continuar</button>
 
                 </form>
                 <button onclick="location.pathname='Home/Index'" type="button" data-dismiss="modal">Cancelar</button>
@@ -118,5 +122,80 @@
 <script>
     var date = document.getElementById("actualIDate");
     date.value = "@dateFormat";
+
+
+
+
+    function validateForm() {
+        var valid = true;
+        var mod = false;
+        var Cname = document.getElementById("customerName");
+        if (Cname.value == null || Cname.value == "") {
+            alert("Debe introducir un nombre");
+            valid = false;
+        }
+        var CId = document.getElementById("customerId");
+        if (CId.value == null || CId.value == "") {
+            alert("Debe introducir un número de identidad");
+            valid = false;
+        }
+        var companion = document.getElementById("customerCompanion");
+        if (companion < 0) {
+            alert("Debe introducir un número de válido de acompañantes");
+            valid = false;
+        }
+        var prepaid = document.getElementById("prepaid");
+        if (prepaid < 0) {
+            alert("Debe introducir una cantidad válida");
+            valid = false;
+        }
+
+
+        if (valid) {
+            var array = @Html.Raw(Json.Serialize(Model.blockedCustomers));
+            var arrayLength = @Model.blockedCustomers.Count();
+            for (var i = 0; i < arrayLength; i++) {
+                if (array[i] == CId.value) {
+                    mod = true;
+                    getIncidences(CId.value)
+                    $('#warningModal').modal()
+                }
+            }
+            if (!mod) {
+                document.getElementById("registerForm").submit();
+            }
+        }
+
+    }
+
+    function modalSubmit() {
+
+        document.getElementById("registerForm").submit();
+    }
+
+    function getIncidences(customer) {
+        var dict = @Html.Raw(Json.Serialize(Model.clientIncidences));
+        var LodgIncArraylength = dict[customer].length;
+        if (LodgIncArraylength > 0) {
+            document.getElementById("print").innerHTML = "<p>Incidencias:</p>";
+            
+        } else {
+           document.getElementById("print").innerHTML = "";
+        }
+        
+        for (var i = 0; i < LodgIncArraylength; i++) {
+
+            incList = "<li>" + dict[customer][i].incidence.subject + "</li>";
+            document.getElementById("print").innerHTML += incList;
+        }
+    }
+
+
+
+
+
+
 </script>
+
+
 
