@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using TrendyShop.Data;
+using TrendyShop.Models;
 using TrendyShop.ViewModels;
 
 namespace TrendyShop.Controllers
@@ -24,6 +25,7 @@ namespace TrendyShop.Controllers
                 RomanticTax = context.SystemDefaultPrices.Single(s => s.Name == "RomanticTax").Amount,
                 LateHoursTax = context.SystemDefaultPrices.Single(s => s.Name == "LateHoursTax").Amount,
                 CompanionTax = context.SystemDefaultPrices.Single(s => s.Name == "CompanionTax").Amount,
+                ExcelPath = context.ExcelPaths.Select(p => p.Path).SingleOrDefault()
             };
             return View(vm);
         }
@@ -77,6 +79,23 @@ namespace TrendyShop.Controllers
             context.SaveChanges();
 
             //Let the client know the action was succesfull
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult SetExcelPath(string path)
+        {
+            try
+            {
+                var previous = context.ExcelPaths.Single();
+                context.ExcelPaths.Add(new ExcelPath { Path = path });
+                context.Remove(previous);
+                context.SaveChanges();
+            }
+            catch
+            {
+                context.ExcelPaths.Add(new ExcelPath { Path = path });
+                context.SaveChanges();
+            }
             return RedirectToAction("Index");
         }
     }

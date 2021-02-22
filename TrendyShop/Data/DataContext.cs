@@ -42,6 +42,8 @@ namespace TrendyShop.Data
         public DbSet<RepositionRecord> Repositions { get; set; }
         public DbSet<ProductOperationType> ProductOperationTypes { get; set; }
         public DbSet<DefaultPrice> SystemDefaultPrices { get; set; }
+        public DbSet<ExcelPath> ExcelPaths { get; set; }
+
 
         public DbSet<EmployeePaymentRecords> EmployeePaymentRecords { get; set; }
 

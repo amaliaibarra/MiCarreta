@@ -38,6 +38,13 @@
                     @Html.TextBoxFor(m => m.CompanionTax, new { @type = "number", @step = "any", @id = "companionTaxInput" })
                 </div>
             </form>
+            <form asp-controller="Settings" asp-action="SetExcelPath">
+                <div class="d-flex flex-column form-group">
+                    @Html.LabelFor(m => m.ExcelPath)
+                    @*@Html.TextBoxFor(m => m.ExcelPath, new { @id = "excelPathInput" , @type="text"})*@
+                    <input type="text" value="@Model.ExcelPath" name="path"/>
+                </div>
+            </form>
         </div>
         <div class="card-footer">
             <button type="button" onclick="location.pathname = '/Home'">Atrás</button>

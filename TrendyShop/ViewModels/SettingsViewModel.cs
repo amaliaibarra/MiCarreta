@@ -22,5 +22,8 @@ namespace TrendyShop.ViewModels
 
         [Display(Name = "Precio Extra por 3er Acompañante")]
         public float CompanionTax { get; set; }
+        
+        [Display(Name = "Directorio para exportar a Excel")]
+        public string ExcelPath { get; set; }
     }
 }
