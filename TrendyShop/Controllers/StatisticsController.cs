@@ -98,7 +98,7 @@ namespace TrendyShop.Controllers
 
                 //Saving
                 string name = "Estadísticas" + " " + year.ToString() + ".xlsx";
-                string path = context.ExcelPaths.Select(e => e.Path).Single() + name;
+                string path = @""+context.ExcelPaths.Select(e => e.Path).Single() +"\\" + name;
 
                 FileStream file = new FileStream(path, FileMode.Create, FileAccess.ReadWrite);
                 workbook.SaveAs(file);
