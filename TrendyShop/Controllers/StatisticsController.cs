@@ -44,7 +44,13 @@ namespace TrendyShop.Controllers
                 allYearStatisitics.Add(GetYearStatistics(year, context));
             }
 
-            return View(allYearStatisitics);
+            var path = context.ExcelPaths.Select(e => e.Path).Single();
+            if (path==null)
+            {
+                path = "";
+            }
+            Tuple<List<YearStatisticsViewModel>, string> myModel = new Tuple<List<YearStatisticsViewModel>, string>(allYearStatisitics, path);
+            return View(myModel);
         }
 
 
