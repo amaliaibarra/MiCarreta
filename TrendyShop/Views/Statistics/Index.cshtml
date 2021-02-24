@@ -3,25 +3,17 @@
     ViewData["Title"] = "Reservaciones";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model IEnumerable<YearStatisticsViewModel>
+
+@model Tuple<List<YearStatisticsViewModel>, string>
 
 
-<script type="text/javascript">
-    function togglezAppearance() {
-        var dataDiv = document.getElementById("data-table");
-        if (dataDiv.style.visibility == "hidden") {
-            dataDiv.style.visibility = "visible";
-        } else {
-            dataDiv.style.visibility = "hidden";
-        }
-    }
-</script>
+
 
 <div class="col-lg-12 mx-auto">
     <div class="card">
         <div class="card-header">Estadísticas Anuales</div>
         <div class="card-body">
-            @foreach (YearStatisticsViewModel ys in Model)
+            @foreach (YearStatisticsViewModel ys in Model.Item1)
             {
                 string collapseYear = '#' + @ys.Year.ToString();
 
@@ -84,20 +76,31 @@
                                             </tr>
                                         }
                                     </table>
-                                    <form asp-action="ExportToExcel" asp-controller="Statistics" asp-route-year="@ys.Year" asp-route-yearSs="@ys">
 
+                                    
+                                 
+                                <form asp-action="ExportToExcel" asp-controller="Statistics" asp-route-year="@ys.Year" asp-route-yearSs="@ys" id="excelform">
+
+                                    @if (Model.Item2.Equals(null) || Model.Item2.Equals(""))
+                                    {
+                                        <button class="ml-1" type="button" data-toggle="modal" data-target="#excelmodal">Exportar a Excel</button>
+                                        
+                                    }
+                                    else
+                                    {
                                         <button type="submit">Exportar a Excel</button>
-                                    </form>
-
+                                    }
+                                </form>
                                 </div>
                             </div>
                         </div>
 
                     </div>
                 </div>
-                @*<h3> @Html.ActionLink(year.ToString(), "Details", "Statistics", new { year })</h3>*@
+
             }
         </div>
+
         <div class="card-footer">
             <button onclick="location.pathname='/Home'">Cancelar</button>
         </div>
@@ -105,7 +108,46 @@
 </div>
 
 
+<div class="modal fade" id="excelmodal" tabindex="-1" role="dialog" aria-labelledby="excelmodalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"  id="excelmodalLongTitle">Localización vacía</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                
+                    <p>Debe ingresar una localización para guardar el archivo</p>
+               
+            </div>
+
+            <div class="modal-footer">
+
+               
+                <button onclick="location.pathname='Settings/Index'" type="button" data-dismiss="modal">Ingresar</button>
+                <button onclick="location.pathname='Statistics/Index'" type="button" data-dismiss="modal">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
+
+
+
+<script type="text/javascript">
+    function togglezAppearance() {
+        var dataDiv = document.getElementById("data-table");
+        if (dataDiv.style.visibility == "hidden") {
+            dataDiv.style.visibility = "visible";
+        } else {
+            dataDiv.style.visibility = "hidden";
+        }
+    }
+
+</script>
 
 

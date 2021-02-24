@@ -44,7 +44,13 @@ namespace TrendyShop.Controllers
                 allYearStatisitics.Add(GetYearStatistics(year, context));
             }
 
-            return View(allYearStatisitics);
+            var path = context.ExcelPaths.Select(e => e.Path).Single();
+            if (path==null)
+            {
+                path = "";
+            }
+            Tuple<List<YearStatisticsViewModel>, string> myModel = new Tuple<List<YearStatisticsViewModel>, string>(allYearStatisitics, path);
+            return View(myModel);
         }
 
 
@@ -98,7 +104,7 @@ namespace TrendyShop.Controllers
 
                 //Saving
                 string name = "Estadísticas" + " " + year.ToString() + ".xlsx";
-                string path = context.ExcelPaths.Select(e => e.Path).Single() + name;
+                string path = @""+context.ExcelPaths.Select(e => e.Path).Single() +"\\" + name;
 
                 FileStream file = new FileStream(path, FileMode.Create, FileAccess.ReadWrite);
                 workbook.SaveAs(file);
@@ -163,34 +169,34 @@ namespace TrendyShop.Controllers
 
 
                 var lodgings = Statics.GetLodgings(context, initialDate, finalDate);
-                lodgingsPerMonth[i] = lodgings.Count;                                       //
+                lodgingsPerMonth[i] = lodgings.Count;                                       
 
-                dailyLodgingsPerMonth[i] = String.Format("{0:0.00}", ((float)lodgingsPerMonth[i] / (float)finalDate.Day));       //   Camiado a string
+                dailyLodgingsPerMonth[i] = String.Format("{0:0.00}", ((float)lodgingsPerMonth[i] / (float)finalDate.Day));       //   Cambiando a string
 
-                var doubleLodg = lodgings.FindAll(dl => dl.IsDouble == true);        //
+                var doubleLodg = lodgings.FindAll(dl => dl.IsDouble == true);        
                 if (doubleLodg == null)
                 {
                     doubleLodgingsPerMonth[i] = 0;
                 }
                 else { doubleLodgingsPerMonth[i] = doubleLodg.Count; }
 
-                consumptionIncomePerMonth[i] = Statics.GetPurchasedProductsIncome(context, initialDate, finalDate);  //
+                consumptionIncomePerMonth[i] = Statics.GetPurchasedProductsIncome(context, initialDate, finalDate);  
 
-                ConsumptionProfitPerMonth[i] = Statics.GetPurchasedProductsProfit(context, initialDate, finalDate);   //
+                ConsumptionProfitPerMonth[i] = Statics.GetPurchasedProductsProfit(context, initialDate, finalDate);   
 
-                var employees = context.Employees.ToList();                        //
+                var employees = context.Employees.ToList();                        
                 foreach (Employee e in employees)
                 {
                     salaryPerMonth[i] += Statics.GetEmployeeSalary(context, initialDate, finalDate, e.EmployeeId);
                 }
 
-                allHouseExpensesPerMonth[i] = Statics.GetMaintenanceExpenses(context, initialDate, finalDate) + Statics.GetHouseExpenses(context, initialDate, finalDate);    //
+                allHouseExpensesPerMonth[i] = Statics.GetMaintenanceExpenses(context, initialDate, finalDate) + Statics.GetHouseExpenses(context, initialDate, finalDate);    
 
-                rentIncomePerMonth[i] = (float)lodgings.Sum(l => l.RentCost);                  //
+                rentIncomePerMonth[i] = (float)lodgings.Sum(l => l.RentCost);                  
 
-                damageIncomePerMonth[i] = Statics.GetIncomePerDamage(context, initialDate, finalDate);    //
+                damageIncomePerMonth[i] = Statics.GetIncomePerDamage(context, initialDate, finalDate);    
 
-                grossIncomePerMonth[i] = consumptionIncomePerMonth[i] + rentIncomePerMonth[i] + damageIncomePerMonth[i];    //
+                grossIncomePerMonth[i] = consumptionIncomePerMonth[i] + rentIncomePerMonth[i] + damageIncomePerMonth[i];    
 
             }
 
@@ -239,10 +245,7 @@ namespace TrendyShop.Controllers
             return ys;
         }
 
-        //static void ExportAll()
-        //{
-
-        //}
+      
 
     }
 }
