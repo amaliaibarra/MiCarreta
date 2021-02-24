@@ -105,8 +105,18 @@ namespace TrendyShop.Controllers
                 //Saving
                 string name = "Estadísticas" + " " + year.ToString() + ".xlsx";
                 string path = @""+context.ExcelPaths.Select(e => e.Path).Single() +"\\" + name;
+                FileStream file = null;
+                try
+                {
+                    file = new FileStream(path, FileMode.Create, FileAccess.ReadWrite);
+                }
+                catch (DirectoryNotFoundException)
+                {
 
-                FileStream file = new FileStream(path, FileMode.Create, FileAccess.ReadWrite);
+                    return View("DirectoryNotFound");
+                }
+
+               
                 workbook.SaveAs(file);
 
                 file.Dispose();
